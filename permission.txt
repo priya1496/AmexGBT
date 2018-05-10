@@ -1,0 +1,77 @@
+/**
+ * access control list.
+ */
+
+rule EveryTMCCanReadEverything {
+    description: "Allow TMC read/create access to Booking asset"
+    participant: "com.syntel.demo.travel.TMC"
+    operation: CREATE,READ
+    resource: "com.syntel.demo.travel.Booking"
+    action: ALLOW
+}
+
+rule EverySupplierCanUpdateEverything {
+    description: "Allow supplier read/update access booking asset"
+    participant: "com.syntel.demo.travel.Supplier"
+    operation: READ,UPDATE
+    resource: "com.syntel.demo.travel.Booking"
+    action: ALLOW
+}
+
+
+
+rule EveryThirdPartyCanUpdateEverything {
+    description: "Allow third party agent read/update access Booking asset"
+    participant: "com.syntel.demo.travel.ThirdParty"
+    operation: READ,UPDATE
+    resource: "com.syntel.demo.travel.Booking"
+    action: ALLOW
+}
+
+
+rule TMCCanSubmitTransactions {
+    description: "Allow TMC to submit place booking transaction"
+    participant: "com.syntel.demo.travel.TMC"
+    operation: CREATE
+    resource: "com.syntel.demo.travel.PlaceBooking"
+    action: ALLOW
+}
+
+rule SupplierCanSubmitTransactions {
+    description: "Allow Supplier to submit Update checkout transaction"
+    participant: "com.syntel.demo.travel.Supplier"
+    operation: CREATE
+    resource: "com.syntel.demo.travel.UpdateCheckout"
+    action: ALLOW
+}
+
+rule ThirdPartyCanSubmitTransactions {
+    description: "Allow Third party to submit update commission transaction"
+    participant: "com.syntel.demo.travel.ThirdParty"
+    operation: CREATE
+    resource: "com.syntel.demo.travel.UpdateCommission"
+    action: ALLOW
+}
+rule SystemACL {
+  description:  "System ACL to permit all access"
+  participant: "org.hyperledger.composer.system.Participant"
+  operation: ALL
+  resource: "org.hyperledger.composer.system.**"
+  action: ALLOW
+}
+
+rule NetworkAdminUser {
+    description: "Grant business network administrators full access to user resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "**"
+    action: ALLOW
+}
+
+rule NetworkAdminSystem {
+    description: "Grant business network administrators full access to system resources"
+    participant: "org.hyperledger.composer.system.NetworkAdmin"
+    operation: ALL
+    resource: "org.hyperledger.composer.system.**"
+    action: ALLOW
+}

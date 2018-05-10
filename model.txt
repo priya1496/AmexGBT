@@ -1,0 +1,124 @@
+/**
+ *Travel Management network
+ */
+namespace com.syntel.demo.travel
+
+
+asset Booking identified by bookingId {
+    o String bookingId //unique booking id
+    o String PNR
+    o String bookingIATA
+	o String bookingBranch
+	o Double custmerNo 
+	o DateTime checkInDate 
+    o DateTime checkOutDate  
+    o String NoOfNights
+    o String NoOfTravler
+	o String Travelername
+	o String Currency
+	o String propertyname
+	o String propertyaddress
+	o String destinationCode
+    o String roomType
+    o Double roomRate
+    o Double fareAmount
+    o Double taxAmount 
+    o DateTime ActulcheckInDate optional
+    o DateTime ActulcheckOutDate optional
+    o String ActulNoOfNights optional
+	o Double ActulfareAmount optional
+    o Double ActultaxAmount optional
+    o Double invoiceDue optional
+    o Double invoiceTax optional
+    o Double totalInvoice optional
+    o Double commissionAmount optional
+ 
+	--> Traveler traveler optional
+    --> Supplier supplier optional
+}
+
+
+
+abstract participant Company identified by companyId{
+    o String companyId
+    o String companyName    
+    o String companyAddress optional
+    o String contactNo optional
+    o String email optional
+}
+
+abstract participant Person identified by personId{
+    o String personId
+	o String Name
+	o String Address
+	o String ContactNo
+	o String email optional
+}
+
+participant TMC extends Company {         
+}
+
+participant Supplier extends Company {   
+}
+
+participant Corporate extends Company {   
+}
+
+participant Traveler extends Person { 
+}
+
+
+participant  ThirdParty extends Company{ 
+}
+
+
+
+
+
+//TMC can place booking transaction
+ transaction PlaceBooking {
+    o String bookingId //unique booking id
+    o String PNR
+    o String bookingIATA
+	o String bookingBranch
+	o Double custmerNo 
+	o DateTime checkInDate 
+    o DateTime checkOutDate  
+    o String NoOfNights
+    o String NoOfTravler
+	o String Travelername
+	o String Currency
+	o String propertyname
+	o String propertyaddress
+	o String destinationCode
+    o String roomType
+    o Double roomRate
+    o Double fareAmount
+    o Double taxAmount
+	//--> Traveler traveler
+    //--> Supplier supplier
+   
+}
+
+//Supplier can update booking details after checkout
+transaction UpdateCheckout  {
+   --> Booking booking
+  
+	o DateTime ActulcheckInDate 
+    o DateTime ActulcheckOutDate 
+    o String ActulNoOfNights
+	o Double ActulfareAmount
+    o Double ActultaxAmount
+	o Double invoiceDue	 
+    o Double invoiceTax
+    o Double totalInvoice
+   
+}
+
+
+//Third Party commission Transaction
+transaction UpdateCommission {
+     --> Booking booking
+
+	o Double commissionAmount
+    }
